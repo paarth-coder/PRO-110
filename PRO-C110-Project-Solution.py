@@ -42,7 +42,7 @@ while camera.isOpened():
         paper_percent = int(predictions[0][1]*100)
         scissor_percent = int(predictions[0][2]*100)
 
-        # comparing to get the prediction with max percent
+        # comparing the data to get the prediction with max percentage
         if stone_percent >= paper_percent and stone_percent >= scissor_percent:
             print(f"I am {stone_percent} sure, that this is a stone")
         elif paper_percent >= stone_percent and paper_percent >= scissor_percent:
