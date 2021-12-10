@@ -1,4 +1,4 @@
-# for captureing frames from webcam
+# for capturing frames from webcam
 import cv2
 
 # for processing images
@@ -13,7 +13,7 @@ camera = cv2.VideoCapture(0)
 # making an object/variable named 'mymodel'
 mymodel = tf.keras.models.load_model('stone paper scissor.h5')
 
-# while camera is connected with the applcation software
+# Run this loop till camera is opened or connected with the applcation software
 while camera.isOpened():
 
     # requesting a frame from camera
