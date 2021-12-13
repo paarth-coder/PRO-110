@@ -11,10 +11,10 @@ import tensorflow as tf
 camera = cv2.VideoCapture(0)
 
 # making an object/variable named 'mymodel'
-mymodel = tf.keras.models.load_model('stone paper scissor.h5')
+mymodel = tf.keras.models.load_model('keras_model.h5')
 
-# Run this loop till camera is opened or connected with the applcation software
-while camera.isOpened():
+# Infinite loop
+while True:
 
     # requesting a frame from camera
     status , frame = camera.read()
@@ -56,8 +56,8 @@ while camera.isOpened():
         # waiting for key press for 1ms
         code = cv2.waitKey(1)
 
-        # if 'b' key is pressed, break
-        if code  ==  ord('b'):
+        # if 'space' key is pressed, break
+        if code  ==  32:
             break
 
 camera.release()
