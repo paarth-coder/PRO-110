@@ -1,64 +1,62 @@
-# for capturing frames from webcam
+# To Capture Frame
 import cv2
 
-# for processing images
+# To process image array
 import numpy as np
 
-# for testing sample data based on our model
+# To Load the Pre-trained Model
 import tensorflow as tf
 
-# attaching webcam indexed as 0 with the application software
+# Attaching Cam indexed as 0, with the application software
 camera = cv2.VideoCapture(0)
 
-# making an object/variable named 'mymodel'
+# Loading the pre-trained model : keras_model.h5
 mymodel = tf.keras.models.load_model('keras_model.h5')
 
 # Infinite loop
 while True:
 
-    # requesting a frame from camera
-    status , frame = camera.read()
+	# Reading / Requesting a Frame from the Camera 
+	status , frame = camera.read()
 
-    # if we were able to capture the frame successfully, status is 'true'
-    if status:
+	# if we were sucessfully able to read the frame
+	if status:
 
-        # flipping the frame
-        frame = cv2.flip(frame , 1)
+		# Flip the frame
+		frame = cv2.flip(frame , 1)
 
-        # resizing the frame
-        resized_frame = cv2.resize(frame , (224 , 224))
+		# Resize the frame
+		resized_frame = cv2.resize(frame , (224,224))
 
-        # increasing the dimension of the frame to 4D along axis 0
-        resized_frame = np.expand_dims(resized_frame , axis = 0)
+		# Expanding the dimension of the array along axis 0
+		resized_frame = np.expand_dims(resized_frame , axis = 0)
 
-        # normalizing the frame (element value ranges from 0 : 255)
-        resized_frame = resized_frame / 255
+		# Normalizing for easy processing
+		resized_frame = resized_frame / 255
 
-        # getting predictions from the model
-        predictions = mymodel.predict(resized_frame)
+		# Getting predictions from the model
+		predictions = mymodel.predict(resized_frame)
 
-        # accessing the predictions array to get the percentages
-        stone_percent = int(predictions[0][0]*100)
-        paper_percent = int(predictions[0][1]*100)
-        scissor_percent = int(predictions[0][2]*100)
+		# Converting the data in the array to percentage confidence 
+		rock = int(predictions[0][0]*100)
+		paper = int(predictions[0][1]*100)
+		scissor = int(predictions[0][2]*100)
 
-        # comparing the data to get the prediction with max percentage
-        if stone_percent >= paper_percent and stone_percent >= scissor_percent:
-            print(f"I am {stone_percent} sure, that this is a stone")
-        elif paper_percent >= stone_percent and paper_percent >= scissor_percent:
-            print(f"I am {paper_percent} sure, that this is a paper")
-        elif scissor_percent >= stone_percent and scissor_percent >= paper_percent:
-            print(f"I am {scissor_percent} sure, that this is a scissor")
+		# printing percentage confidence
+		print(f"Rock: {rock} %, Paper: {paper} %, Scissor: {scissor} %")
 
-        # displaying the video feed
-        cv2.imshow('video feed' , frame)
+		# displaying the frames captured
+		cv2.imshow('feed' , frame)
 
-        # waiting for key press for 1ms
-        code = cv2.waitKey(1)
+		# waiting for 1ms
+		code = cv2.waitKey(1)
+		
+		# if space key is pressed, break the loop
+		if code == 32:
+			break
 
-        # if 'space' key is pressed, break
-        if code  ==  32:
-            break
-
+# release the camera from the application software
 camera.release()
+
+# close the open window
 cv2.destroyAllWindows()
